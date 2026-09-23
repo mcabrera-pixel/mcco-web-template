@@ -1,0 +1,26 @@
+{
+  "name": "web-plantilla-mcco",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Web MCCO conforme al Estándar Web v2 (Astro + @mcco/web-kit + Cloudflare Pages)",
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "mcco-headers",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "mcco-check --dist dist",
+    "parity": "mcco-parity",
+    "headers": "mcco-headers"
+  },
+  "dependencies": {
+    "@mcco/web-kit": "github:mcabrera-pixel/mcco-web-kit#v1.0.0",
+    "astro": "^7.3.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.62.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

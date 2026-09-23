@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.dev.vars
+.env
+.env.*
+*.log
+.DS_Store
+# public/_headers y public/_redirects los genera mcco-headers en prebuild y SÍ se versionan:
+# así la CSP efectiva queda visible en el repo y cualquier cambio de site.yaml deja diff revisable.

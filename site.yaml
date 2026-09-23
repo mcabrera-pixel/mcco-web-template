@@ -1,0 +1,84 @@
+# site.yaml — manifiesto del sitio (Estándar Web MCCO v2 §2). Única fuente de verdad: el kit, la CI,
+# el motor de contenido y los agentes leen de aquí. Nada de esto se hardcodea en las páginas.
+schema: 1
+key: plantilla                      # clave corta (motor, logs, nombre del clon en la VPS)
+name: Plantilla MCCO                # nombre público del sitio / división
+domain: https://plantilla.mcco.cl   # https://host sin ruta ni barra final
+lang: es-CL
+locales: [es]                       # agregar "en" cuando exista /en/ con hreflang recíproco
+tagline: "EDITAR: una frase de posicionamiento (≤ 90 caracteres)"
+description: >
+  EDITAR: descripción de 120-160 caracteres que se usa en la home, en llms.txt y en el JSON-LD
+  Organization. Qué hace la división, para quién y dónde (Chile).
+role: gemelos                       # escaneo | drones | gemelos | corporativa — define parentOrganization/subOrganization
+
+cloudflare:
+  project: plantilla-mcco           # `npx wrangler pages project create <project>`; el CI despliega aquí
+  zone_checklist_done: false        # ver estándar §9: AI Crawl Control allow · robots gestionado OFF · Crawler Hints ON
+
+analytics:
+  ga4: ""                           # G-XXXXXXX (vacío = no se emite gtag)
+  ads: ""                           # AW-XXXXXXX
+  cf_beacon_token: ""               # Cloudflare Web Analytics (token del snippet)
+
+contact:
+  whatsapp: "+56979860843"
+  phone: "+56 9 7986 0843"
+  email: proyectos@mccocopper.cl
+  turnstile_sitekey: ""             # público; el secret va en Cloudflare env TURNSTILE_SECRET
+  response_sla: Respondemos en menos de 24 horas hábiles.
+
+content:
+  blog_dir: src/content/blog        # el motor de contenido escribe SOLO aquí
+  collections: [blog]               # colecciones activas en este sitio: blog | casos | guias (sitemap/llms solo las leen a ellas)
+  cadence: ""                       # lunes | miércoles | viernes (calendario del motor)
+  author:
+    name: Mario Cabrera
+    role: Gerente General, MCCO Group SpA
+
+seo:
+  og_image: /og.webp                # 1200×630, ≤ 600 KB
+  logo: /logo.png
+  sameAs: []                        # solo perfiles reales y verificados (LinkedIn de la división, YouTube…)
+
+# Orígenes adicionales para la CSP (mcco-headers genera public/_headers). Google Fonts, Turnstile,
+# Cloudflare Insights y Web3Forms ya están en la base; gtag/Ads se agregan solos si analytics tiene ids.
+csp:
+  script_src: []
+  style_src: []
+  font_src: []
+  img_src: []
+  media_src: []                     # p. ej. https://pub-xxxx.r2.dev para videos en R2
+  connect_src: []
+  frame_src: []
+  unsafe_eval: false
+
+redirects:
+  www_to_apex: true                 # https://www.<host>/* → https://<host>/:splat 301
+  extra_hosts: []                   # dominios alternativos que también deben redirigir al canónico
+
+# Home data-driven (la plantilla renderiza estas listas; vacías = la sección no aparece)
+services:
+  - title: "EDITAR: servicio 1"
+    text: "EDITAR: qué entrega, para quién, con qué equipo. Sin cifras no verificadas."
+    # url: /servicios/servicio-1/   ← solo cuando la página exista (mcco-check R4 rechaza enlaces rotos)
+
+# Rutas que existen pero no se indexan ni entran al sitemap (además de /gracias, /contacto-error y /404)
+sitemap:
+  exclude: []
+faq:
+  - q: "EDITAR: pregunta frecuente 1"
+    a: "EDITAR: respuesta autocontenida de 40-80 palabras, citable suelta por un buscador o una IA."
+
+# Páginas principales para llms.txt (título + ruta)
+llms:
+  pages:
+    - { title: Inicio, url: / }
+
+# Verdad del sitio: strings que NO pueden aparecer en producción (mcco-check falla). Complementa la blacklist NDA del kit.
+forbidden: []
+# Clientes que SÍ se pueden nombrar (informativo para agentes; la lista viva la fija Mario)
+clients_allowed: [CODELCO, BHP, ASTER, CAPSTONE COPPER, EL ABRA]
+
+legacy_pages: false                 # true mientras queden páginas .html sin layout (R7 pasa a aviso)
+indexnow_key: ""                    # misma key del motor; el archivo <key>.txt va en public/

@@ -1,0 +1,51 @@
+---
+// Home data-driven: nombre, tagline, servicios y FAQ salen de site.yaml. Diseño según DESIGN.md del sitio.
+import Base from '@mcco/web-kit/layouts/Base.astro';
+import Faq from '@mcco/web-kit/components/Faq.astro';
+import Cta from '@mcco/web-kit/components/Cta.astro';
+import { loadSite } from '@mcco/web-kit/lib/site.mjs';
+import '../styles/theme.css';
+
+const site = loadSite();
+const services: { title: string; text: string; url?: string }[] = (site as any).services ?? [];
+const faq: { q: string; a: string }[] = (site as any).faq ?? [];
+---
+<Base title={`${site.name} | ${site.tagline ?? ''}`.trim()} description={site.description.trim()} organization={true}>
+  <header class="nav">
+    <a class="nav__brand" href="/">{site.name}</a>
+    <nav aria-label="Principal">
+      {services.length > 0 && <a href="#servicios">Servicios</a>}
+      <a href="/blog/">Blog</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="hero__kicker">MCCO Group · Chile</p>
+      <h1>{site.tagline}</h1>
+      <p class="hero__lead">{site.description.trim()}</p>
+      <a class="btn" href="#contacto">Cotizar</a>
+    </section>
+
+    {services.length > 0 && (
+      <section id="servicios" class="services">
+        <h2>Servicios</h2>
+        <div class="services__grid">
+          {services.map((s) => (
+            <article class="service">
+              <h3>{s.url ? <a href={s.url}>{s.title}</a> : s.title}</h3>
+              <p>{s.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {faq.length > 0 && <Faq items={faq} />}
+
+    <section id="contacto">
+      <Cta title={`Hablemos de tu proyecto con ${site.name}`} />
+    </section>
+  </main>
+</Base>
