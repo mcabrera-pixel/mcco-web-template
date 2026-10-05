@@ -1,0 +1,120 @@
+---
+// Demo del sistema visual del kit (v1.1). La misma página con dos juegos de tokens: así se prueba que los
+// componentes toman el color del sitio y no traen estética propia. Material: el que ya publica as-built.cl.
+import Base from '@mcco/web-kit/layouts/Base.astro';
+import HeroParticulas from '@mcco/web-kit/components/visual/HeroParticulas.astro';
+import VideoBanda from '@mcco/web-kit/components/visual/VideoBanda.astro';
+import ProcesoScroll from '@mcco/web-kit/components/visual/ProcesoScroll.astro';
+import Figura from '@mcco/web-kit/components/visual/Figura.astro';
+import Revelar from '@mcco/web-kit/components/visual/Revelar.astro';
+import FranjaClientes from '@mcco/web-kit/components/visual/FranjaClientes.astro';
+import PrecioDesde from '@mcco/web-kit/components/visual/PrecioDesde.astro';
+
+interface Props { tema: 'claro' | 'oscuro' }
+const { tema } = Astro.props;
+const oscuro = tema === 'oscuro';
+const otra = oscuro ? { href: '/demo-visual', texto: 'Ver en tema claro' } : { href: '/demo-visual-oscura', texto: 'Ver en tema oscuro' };
+
+const activos = [
+  { src: '/media/ilustracion/molino-sag-960.webp', etiqueta: 'Molino SAG', alt: 'Ilustración de un molino SAG en nube de puntos' },
+  { src: '/media/ilustracion/caex-ultraclase-960.webp', etiqueta: 'Camión CAEX', alt: 'Ilustración de un camión de extracción en nube de puntos' },
+  { src: '/media/ilustracion/chancador-nube-960.webp', etiqueta: 'Chancador', alt: 'Ilustración de un chancador primario en nube de puntos' },
+  { src: '/media/ilustracion/convertidor-peirce-smith-960.webp', etiqueta: 'Convertidor', alt: 'Ilustración de un convertidor Peirce-Smith en nube de puntos' },
+];
+const comoTrabajamos = [
+  { titulo: 'Visita técnica', texto: 'Vemos el área, los accesos y la ventana de operación.', icono: 'reunion' },
+  { titulo: 'Escaneo en terreno', texto: 'Estaciones con FARO Focus alrededor del equipo.', icono: 'escaner' },
+  { titulo: 'Registro de la nube', texto: 'Unimos las estaciones en una sola nube de puntos.', icono: 'nube' },
+  { titulo: 'Modelo y planos', texto: 'Modelamos lo que pide el proyecto, no más.', icono: 'modelo' },
+  { titulo: 'Entrega', texto: 'Nube, planos y modelo en los formatos de tu equipo.', icono: 'documento' },
+];
+const recorrido = [
+  { titulo: 'Mina', texto: 'Rajo, botaderos y caminos.', icono: 'mina' },
+  { titulo: 'Chancado', texto: 'Chancador primario y correas.', icono: 'chancado' },
+  { titulo: 'Concentradora', texto: 'Molienda y flotación.', icono: 'concentradora' },
+  { titulo: 'Fundición', texto: 'Hornos, convertidores y naves.', icono: 'fundicion' },
+];
+---
+<Base title={`Demo sistema visual MCCO · tema ${tema}`}
+  description={`Prueba de los componentes visuales de @mcco/web-kit 1.1 con tokens de tema ${tema}: hero de partículas, video de faena, proceso y figuras rotuladas.`}
+  noindex={true}>
+  <header class="demo-nav">
+    <a class="demo-nav__marca" href="/">MCCO · kit visual</a>
+    <a href={otra.href}>{otra.texto}</a>
+  </header>
+
+  <main class={`demo demo--${tema}`}>
+    <HeroParticulas activos={activos} antetitulo="Escaneo láser 3D · demo del kit" intervalo={8}
+      bajada="Medimos tu instalación con escáner FARO y la entregamos como nube de puntos, planos o modelo.">
+      <Fragment slot="titulo">Capturar lo que existe. <span class="demo-acento">Proyectar lo que viene.</span></Fragment>
+      <div class="demo-acciones">
+        <a class="demo-btn" href="#proceso">Cómo trabajamos</a>
+        <PrecioDesde uf={45} detalle="control dimensional" contar />
+      </div>
+      <dl class="demo-cifras">
+        <div><dt>±<span data-contar="2">2</span> mm</dt><dd>precisión de levantamiento</dd></div>
+        <div><dt>FARO</dt><dd>escáner con certificado de calibración</dd></div>
+      </dl>
+    </HeroParticulas>
+
+    <FranjaClientes />
+
+    <ProcesoScroll id="proceso" antetitulo="Cómo trabajamos" titulo="De la visita a la entrega, en cinco pasos." pasos={comoTrabajamos}
+      nota="Plazos y alcance se fijan en cada propuesta." />
+
+    <VideoBanda src="/media/video/dron-faena.mp4" poster="/media/video/dron-faena-poster.webp" rotulo="Registro en terreno"
+      etiqueta="Inspección aérea con dron sobre una torre de alta tensión">
+      <h2>Zonas altas o extensas, capturadas con dron.</h2>
+      <p>Torres, techos y ductos de difícil acceso, sin andamios.</p>
+    </VideoBanda>
+
+    <section class="demo-figuras" aria-labelledby="figuras-titulo">
+      <h2 id="figuras-titulo" data-revelar>Cada imagen dice de dónde viene.</h2>
+      <div class="demo-figuras__grilla" data-revelar-grupo>
+        <Figura src="/media/real/proyecto-mineria-800.webp" width={800} height={600} origen="real" proporcion="4 / 3"
+          alt="Escáner FARO Focus sobre trípode en una plataforma de planta, con la cordillera al fondo" pie="FARO Focus en una plataforma de planta." />
+        <Figura src="/media/render/chimenea-verticalidad.webp" width={782} height={784} origen="render" rotuloEn="sup-der" proporcion="4 / 3" ajuste="contener"
+          alt="Modelo de una chimenea coloreado según su desviación de la vertical" pie="Desviación de la vertical, desde la nube." />
+        <Figura src="/media/esquema/estaciones-escaneo.svg" width={800} height={500} origen="esquema" proporcion="4 / 3" ajuste="contener"
+          alt="Esquema en planta de cinco estaciones de escaneo alrededor de un equipo" pie="Estaciones de escaneo alrededor de un equipo." />
+        <Figura src="/media/ilustracion/rajo-atacama-amanecer-960.webp" width={960} height={540} origen="ilustracion" proporcion="4 / 3"
+          alt="Ilustración de un rajo abierto al amanecer" pie="Atmósfera. No muestra un proyecto." />
+      </div>
+    </section>
+
+    <ProcesoScroll antetitulo="Dónde trabajamos" titulo="Del rajo a la fundición." pasos={recorrido} nota="Esquema simplificado de la ruta del cobre por fundición." />
+
+    <VideoBanda formato="partido" src="/media/video/faro-terreno.mp4" poster="/media/video/faro-terreno-poster.webp"
+      etiqueta="Tomas de un levantamiento con escáner FARO en faena">
+      <h2>Del trípode en la plataforma al modelo en pantalla.</h2>
+      <p>Un levantamiento pasa por estaciones de escaneo, registro de la nube y modelado.</p>
+      <PrecioDesde uf={45} detalle="+ IVA" />
+    </VideoBanda>
+  </main>
+
+  <Revelar />
+</Base>
+
+<style is:global>
+  /* Los colores de cada tema van en src/styles/demo-{claro,oscuro}.css, que importa cada página: los tokens
+     se declaran en :root, donde se resuelven los --mcco-*. */
+  :root {
+    --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --space: 1.25rem;
+    --maxw: 1200px;
+  }
+  body { margin: 0; background: var(--mcco-color-bg); color: var(--mcco-color-text); font-family: var(--mcco-font-body); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .demo-nav { max-width: var(--mcco-maxw); margin: 0 auto; padding: 1rem var(--mcco-space); display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9375rem; }
+  .demo-nav__marca { font-weight: 650; text-decoration: none; letter-spacing: 0.02em; }
+  .demo-acento { color: var(--mcco-color-muted); }
+  .demo-acciones { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; margin-bottom: 1.75rem; }
+  .demo-btn { display: inline-block; padding: 0.8rem 1.3rem; border-radius: var(--mcco-radius); background: var(--mcco-color-accent); color: var(--mcco-color-on-accent); font-weight: 600; text-decoration: none; }
+  .demo-cifras { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0; }
+  .demo-cifras dt { font-family: var(--mcco-font-display); font-size: 1.75rem; font-weight: 650; line-height: 1.1; }
+  .demo-cifras dd { margin: 0.2rem 0 0; font-size: 0.8125rem; color: var(--mcco-color-muted); max-width: 14em; }
+  .demo-figuras { max-width: var(--mcco-maxw); margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) var(--mcco-space); }
+  .demo-figuras h2 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 2rem; }
+  .demo-figuras__grilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; align-items: start; }
+</style>

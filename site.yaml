@@ -65,7 +65,7 @@ services:
 
 # Rutas que existen pero no se indexan ni entran al sitemap (además de /gracias, /contacto-error y /404)
 sitemap:
-  exclude: []
+  exclude: [/demo-visual, /demo-visual-oscura]   # demo del sistema visual del kit (noindex)
 faq:
   - q: "EDITAR: pregunta frecuente 1"
     a: "EDITAR: respuesta autocontenida de 40-80 palabras, citable suelta por un buscador o una IA."
