@@ -36,6 +36,10 @@ functions/api/contact.js  formulario (Pages Function del kit)
 | `npm run check` | `mcco-check` (reglas R1-R10 del estándar) sobre `dist/` |
 | `npm run parity -- --old https://dominio` | compara producción vs `dist/` ruta por ruta (migraciones) |
 
+## Sistema visual (kit v1.1)
+
+`/demo-visual` (tema claro) y `/demo-visual-oscura` muestran los componentes de `@mcco/web-kit/components/visual/` con material publicado en as-built.cl: hero de partículas, video de faena, proceso que se dibuja al bajar, figuras rotuladas por origen, franja de clientes y precio desde UF. Son `noindex` y están fuera del sitemap. Las dos páginas usan los mismos componentes; solo cambian los tokens (`src/styles/demo-claro.css` y `demo-oscuro.css`). Para un sitio nuevo se pueden borrar junto con `src/components/DemoVisual.astro` y `public/media/`. Guía: `docs/SISTEMA-VISUAL.md` del kit.
+
 ## Referencias
 
 - Estándar Web MCCO v2: `mcco-engineering-standards/docs/reglas/sitios-web.md` (regla) y `docs/sitios-web/ESTANDAR-WEB-MCCO-v2.md` (documento completo).

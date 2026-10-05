@@ -1,0 +1,6 @@
+/* Tokens de la demo del sistema visual, tema oscuro. Solo valores: los componentes del kit leen los nombres. */
+:root {
+  color-scheme: dark;
+  --color-bg: #0a1114; --color-bg-alt: #111c20; --color-text: #eef2ec; --color-muted: #a6b8ba;
+  --color-accent: #beff63; --color-on-accent: #0a1114; --color-border: #26393e; --radius: 2px;
+}
