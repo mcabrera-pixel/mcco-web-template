@@ -6,10 +6,11 @@ name: Plantilla MCCO                # nombre público del sitio / división
 domain: https://plantilla.mcco.cl   # https://host sin ruta ni barra final
 lang: es-CL
 locales: [es]                       # agregar "en" cuando exista /en/ con hreflang recíproco
-tagline: "EDITAR: una frase de posicionamiento (≤ 90 caracteres)"
+tagline: "Webs MCCO conformes al Estándar Web v2"   # EDITAR en el sitio nuevo (≤ 90 caracteres)
+# EDITAR en el sitio nuevo: 120-160 caracteres para la home, llms.txt y el JSON-LD Organization.
 description: >
-  EDITAR: descripción de 120-160 caracteres que se usa en la home, en llms.txt y en el JSON-LD
-  Organization. Qué hace la división, para quién y dónde (Chile).
+  Plantilla de las webs de MCCO Group en Chile: Astro, @mcco/web-kit y Cloudflare Pages, con el
+  Estándar Web v2 verificado en cada cambio.
 role: gemelos                       # escaneo | drones | gemelos | corporativa — define parentOrganization/subOrganization
 
 cloudflare:
@@ -59,16 +60,19 @@ redirects:
 
 # Home data-driven (la plantilla renderiza estas listas; vacías = la sección no aparece)
 services:
-  - title: "EDITAR: servicio 1"
-    text: "EDITAR: qué entrega, para quién, con qué equipo. Sin cifras no verificadas."
+  # EDITAR en el sitio nuevo: qué entrega, para quién, con qué equipo. Sin cifras no verificadas.
+  - title: "Sistema visual del kit"
+    text: "Hero de partículas, video de faena, procesos y figuras rotuladas, con los colores de cada sitio."
+    url: /demo-visual
     # url: /servicios/servicio-1/   ← solo cuando la página exista (mcco-check R4 rechaza enlaces rotos)
 
 # Rutas que existen pero no se indexan ni entran al sitemap (además de /gracias, /contacto-error y /404)
 sitemap:
   exclude: [/demo-visual, /demo-visual-oscura]   # demo del sistema visual del kit (noindex)
 faq:
-  - q: "EDITAR: pregunta frecuente 1"
-    a: "EDITAR: respuesta autocontenida de 40-80 palabras, citable suelta por un buscador o una IA."
+  # EDITAR en el sitio nuevo: respuestas autocontenidas de 40-80 palabras, citables sueltas.
+  - q: "¿Qué es esta plantilla?"
+    a: "Es el punto de partida de cada web de MCCO Group. Trae el kit compartido con la cabecera, los datos de la entidad, el sitemap y el verificador mcco-check, más el sistema visual. Un sitio nuevo cambia site.yaml, sus textos y sus tokens de color, y nace cumpliendo el Estándar Web v2."
 
 # Páginas principales para llms.txt (título + ruta)
 llms:
