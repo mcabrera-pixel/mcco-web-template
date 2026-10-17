@@ -1,0 +1,77 @@
+---
+// Demo del estándar Apple + antigravity del kit (v1.2): layout con sus slots head y pie, barra global,
+// sub-navegación, hero, un bloque de cada tono y acciones. noindex y fuera del sitemap (site.yaml), como las demos
+// del sistema visual. Las tareas siguientes del plan suman aquí sus piezas.
+import Estandar from '@mcco/web-kit/layouts/Estandar.astro';
+import HeroEstandar from '@mcco/web-kit/components/estandar/HeroEstandar.astro';
+import Bloque from '@mcco/web-kit/components/estandar/Bloque.astro';
+import Acciones from '@mcco/web-kit/components/estandar/Acciones.astro';
+
+const nav = {
+  logo: { src: '/favicon.svg', alt: 'Plantilla MCCO', width: 32, height: 32 },
+  enlaces: [
+    { href: '#claro', texto: 'Bloques' },
+    { href: '#acciones', texto: 'Acciones' },
+    { href: '/demo-visual', texto: 'Sistema visual' },
+    { href: '/blog/', texto: 'Blog' },
+    { href: '/#contacto', texto: 'Contacto' },
+  ],
+};
+const subnav = {
+  titulo: 'Estándar MCCO',
+  enlaces: [
+    { href: '#claro', texto: 'Claro' },
+    { href: '#negro', texto: 'Negro' },
+    { href: '#parchment', texto: 'Parchment' },
+  ],
+  accion: { href: '/#contacto', texto: 'Hablar con un ingeniero', textoCorto: 'Contactar' },
+};
+const acciones = [
+  { href: '#negro', texto: 'Píldora llena' },
+  { href: '#parchment', texto: 'Píldora fantasma', variante: 'fantasma' as const },
+  { href: '/demo-visual', texto: 'Enlace de texto', variante: 'mas' as const },
+];
+---
+<Estandar title="Demo del estándar MCCO · Apple + antigravity"
+  description="Prueba del estándar Apple + antigravity de @mcco/web-kit, con la barra global, la sub-navegación, el hero con la nube, un bloque de cada tono y las acciones."
+  noindex={true} nav={nav} subnav={subnav}>
+  <link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <HeroEstandar titulo="Un solo estándar para las webs MCCO."
+    bajada="Barra global, sub-navegación, bloques a todo el ancho y acciones en píldora. Cada sitio pone su color."
+    acciones={[
+      { href: '#claro', texto: 'Ver los bloques' },
+      { href: '/demo-visual', texto: 'Ver el sistema visual', variante: 'fantasma' },
+    ]}
+    nube={{ respaldo: { src: '/media/ilustracion/chancador-nube-960.webp', width: 960, height: 540, alt: 'Chancador primario en nube de puntos' } }} />
+
+  <Bloque tono="claro" id="claro" aria-labelledby="claro-titulo">
+    <h2 class="std-h2" id="claro-titulo">Bloque claro.</h2>
+    <p class="std-tagline">Fondo blanco y un título grande, con poco texto debajo.</p>
+    <Acciones acciones={acciones} />
+  </Bloque>
+
+  <Bloque tono="negro" id="negro" aria-labelledby="negro-titulo">
+    <h2 class="std-h2" id="negro-titulo">Bloque negro.</h2>
+    <p class="std-tagline">La sub-navegación pasa a su versión oscura cuando este bloque queda debajo.</p>
+    <Acciones acciones={acciones} />
+  </Bloque>
+
+  <Bloque tono="parchment" id="parchment" aria-labelledby="parchment-titulo">
+    <h2 class="std-h2" id="parchment-titulo">Bloque parchment.</h2>
+    <p class="std-tagline">Separa una sección de otra sin usar líneas. Aquí las acciones van en tamaño chico.</p>
+    <div id="acciones"><Acciones acciones={acciones} tamano="chica" /></div>
+  </Bloque>
+
+  <Bloque tono="negro-suave" id="negro-suave" aria-labelledby="negro-suave-titulo">
+    <h2 class="std-h2" id="negro-suave-titulo">Bloque negro suave.</h2>
+    <p class="std-tagline">Alterna con el negro en grillas y secciones largas.</p>
+    <Acciones acciones={acciones} />
+    <p class="std-fina">La letra fina sobre negro también cumple el contraste AA.</p>
+  </Bloque>
+
+  <footer slot="pie">
+    <Bloque tono="parchment">
+      <p class="std-fina">Aquí va el pie de cada sitio. Debajo, el kit agrega el bloque Grupo MCCO.</p>
+    </Bloque>
+  </footer>
+</Estandar>
