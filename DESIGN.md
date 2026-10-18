@@ -228,7 +228,7 @@ El estándar usa WebGL2 propio, IntersectionObserver y CSS. No incorpora Three.j
 | LCP previsto | H1 |
 | CLS | Menor que 0,1 |
 | Imágenes | Menos de 400 KB, según R12 |
-| Activos de la nube | De 100 a 200 KB |
+| Activos de la nube | De 100 a 200 KB. El que sirve de respaldo del hero no pasa de 150 KB, el tope de héroes del contrato del sitio |
 | Videos | Hasta 8 MB, en R2 con poster WebP |
 
 La cantidad de puntos se fija al arrancar. El campo cambia sus anillos al cruzar la condición de pantalla. Los límites de Lighthouse son objetivos que se miden en el sitio final, no resultados garantizados por usar la plantilla.
@@ -237,7 +237,7 @@ Los videos no se agregan al repositorio. Su origen en R2 se declara en `site.yam
 
 ## Imágenes, rótulos y textos MCCO
 
-Se usa primero material real propio de faena y después renders propios de nubes de puntos, modelos o mapas de desviaciones. La IA se reserva para atmósfera o para ilustrar cómo se trabaja. Cada imagen generada requiere un prompt revisado, geometría creíble y referencias, y se revisa por separado. No puede contener escalas, cifras, textos, logos ni marcas inventadas. Tampoco se usan avatares o personas generadas como testimonios.
+Se usa primero material real propio de faena y después renders propios de nubes de puntos, modelos o mapas de desviaciones. El alcance de la IA lo fija la regla de imágenes del contrato del sitio (`AGENTS.md`). Cada imagen generada requiere un prompt revisado, geometría creíble y referencias, y se revisa por separado. No puede contener escalas, cifras, textos, logos ni marcas inventadas. Tampoco se usan avatares o personas generadas como testimonios.
 
 Una simulación presentada como trabajo de MCCO debe ser una captura real. Antes de publicarla se retiran escalas, valores, nombres de archivo y cualquier dato que identifique al cliente, la faena, la planta o el folio. También se retiran logos de software si permiten identificar al cliente. La revisión incluye el `forbidden` de `site.yaml` y la blacklist del kit.
 
