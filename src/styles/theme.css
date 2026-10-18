@@ -1,6 +1,21 @@
-/* theme.css — VALORES de los tokens del sitio (los NOMBRES los fija @mcco/web-kit/styles/tokens.css).
-   Base: DESIGN.md (industrial editorial MCCO). Cada división ajusta paleta y tipografía aquí, no en los componentes. */
+/* theme.css: valores heredados del sistema v1 para las páginas que todavía no migran.
+   DESIGN.md describe el estándar nuevo, que fija @mcco/web-kit. Se conservan los estilos v1 de estas páginas. */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* Ejemplo para un sitio que adopta el estándar Apple + antigravity.
+   Sus variables de acción van en :root, con contraste AA en cada uso. Estos son los valores por defecto del kit.
+   Al migrar, sustituir los estilos v1 por las variables del sitio antes de importar esta hoja desde Estandar.
+   La demo no importa este archivo: usa el azul del kit sin las reglas de body ni IBM Plex del sistema v1.
+
+:root {
+  --accion: #0066cc;
+  --accion-boton: #0071e3;
+  --accion-foco: #0071e3;
+  --accion-oscuro: #2997ff;
+  --campo-claro: var(--accion-oscuro);
+  --campo-oscuro: var(--accion);
+}
+*/
 
 :root {
   --color-bg: #f4efe6;        /* brand-cream */
