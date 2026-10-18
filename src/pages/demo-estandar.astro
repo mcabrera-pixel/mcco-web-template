@@ -1,8 +1,8 @@
 ---
 // Demo del estándar Apple + antigravity del kit (v1.2): layout con sus slots head y pie, barra global,
-// sub-navegación, hero con la nube, historia de la nube con cuatro formas, un bloque de cada tono, acciones, grilla de
-// productos, galería en cuadros y en mosaico, cifras y tarjetas de marca. noindex y fuera del sitemap (site.yaml),
-// como las demos del sistema visual. Las tareas siguientes del plan suman aquí sus piezas.
+// sub-navegación, hero con el campo y la nube (y su botón de pausa), historia de la nube con cuatro formas, un bloque
+// de cada tono, acciones, grilla de productos, galería en cuadros y en mosaico, cifras y tarjetas de marca. noindex y
+// fuera del sitemap (site.yaml), como las demos del sistema visual. Las tareas siguientes del plan suman aquí sus piezas.
 // Las cuatro ilustraciones de la nube (hero-*-960.webp) son las de mcco.cl, hechas con Codex (docs/CODEX-IMAGENES.md
 // de ese repo), y llevan el rótulo «Ilustración».
 import Estandar from '@mcco/web-kit/layouts/Estandar.astro';
@@ -74,7 +74,7 @@ const marcas = sitios.filter((s) => logos[s.key]).map((s) => ({
 }));
 ---
 <Estandar title="Demo del estándar MCCO · Apple + antigravity"
-  description="Prueba de las piezas del estándar Apple + antigravity de @mcco/web-kit: barras, hero con la nube, historia, bloques, grilla, galería, cifras y marcas."
+  description="Prueba de las piezas del estándar Apple + antigravity de @mcco/web-kit: barras, hero con campo y nube, historia, bloques, grilla, galería, cifras y marcas."
   noindex={true} nav={nav} subnav={subnav}>
   <link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <HeroEstandar titulo="Un solo estándar para las webs MCCO."
@@ -83,7 +83,7 @@ const marcas = sitios.filter((s) => logos[s.key]).map((s) => ({
       { href: '#claro', texto: 'Ver los bloques' },
       { href: '/demo-visual', texto: 'Ver el sistema visual', variante: 'fantasma' },
     ]}
-    nube={{ respaldo: { src: formas[0].src, width: 960, height: 540, alt: formas[0].alt } }} />
+    nube={{ respaldo: { src: formas[0].src, width: 960, height: 540, alt: formas[0].alt } }} campo />
 
   <HistoriaNube id="historia" titulo="Historia en nube de puntos."
     bajada="La nube baja desde el hero y, mientras recorres esta sección, pasa de un activo al siguiente y se enciende su paso."
