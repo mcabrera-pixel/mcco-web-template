@@ -8,5 +8,5 @@ on:
 jobs:
   deploy:
     if: github.repository != 'mcabrera-pixel/mcco-web-template'
-    uses: mcabrera-pixel/mcco-web-kit/.github/workflows/site-deploy.yml@v1.2.0-rc.1
+    uses: mcabrera-pixel/mcco-web-kit/.github/workflows/site-deploy.yml@v1.2.0
     secrets: inherit
