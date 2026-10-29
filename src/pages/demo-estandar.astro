@@ -1,0 +1,202 @@
+---
+// Demo del estándar Apple + antigravity del kit (v1.2): layout con sus slots head y pie, barra global,
+// sub-navegación, hero con el campo y la nube (y su botón de pausa), historia de la nube con cuatro formas, un bloque
+// de cada tono, acciones, grilla de productos, galería en cuadros y en mosaico, cifras y tarjetas de marca. noindex y
+// fuera del sitemap (site.yaml), como las demos del sistema visual. Las tareas siguientes del plan suman aquí sus piezas.
+// Las cuatro ilustraciones de la nube (hero-*-960.webp) son las de mcco.cl, hechas con Codex (docs/CODEX-IMAGENES.md
+// de ese repo), y llevan el rótulo «Ilustración».
+import Estandar from '@mcco/web-kit/layouts/Estandar.astro';
+import HeroEstandar from '@mcco/web-kit/components/estandar/HeroEstandar.astro';
+import HistoriaNube from '@mcco/web-kit/components/estandar/HistoriaNube.astro';
+import Bloque from '@mcco/web-kit/components/estandar/Bloque.astro';
+import Acciones from '@mcco/web-kit/components/estandar/Acciones.astro';
+import GrillaProductos from '@mcco/web-kit/components/estandar/GrillaProductos.astro';
+import Producto from '@mcco/web-kit/components/estandar/Producto.astro';
+import Galeria from '@mcco/web-kit/components/estandar/Galeria.astro';
+import Cifras from '@mcco/web-kit/components/estandar/Cifras.astro';
+import TarjetasMarca from '@mcco/web-kit/components/estandar/TarjetasMarca.astro';
+import sitios from '@mcco/web-kit/data/sites.json';
+
+const nav = {
+  logo: { src: '/favicon.svg', alt: 'Plantilla MCCO', width: 32, height: 32 },
+  enlaces: [
+    { href: '#claro', texto: 'Bloques' },
+    { href: '#acciones', texto: 'Acciones' },
+    { href: '/demo-visual', texto: 'Sistema visual' },
+    { href: '/demo-estandar', texto: 'Estándar' },
+    { href: '/#contacto', texto: 'Contacto' },
+  ],
+};
+const subnav = {
+  titulo: 'Estándar MCCO',
+  enlaces: [
+    { href: '#historia', texto: 'Historia' },
+    { href: '#claro', texto: 'Claro' },
+    { href: '#negro', texto: 'Negro' },
+    { href: '#parchment', texto: 'Parchment' },
+  ],
+  accion: { href: '/#contacto', texto: 'Hablar con un ingeniero', textoCorto: 'Contactar' },
+};
+const acciones = [
+  { href: '#negro', texto: 'Píldora llena' },
+  { href: '#parchment', texto: 'Píldora fantasma', variante: 'fantasma' as const },
+  { href: '/demo-visual', texto: 'Enlace de texto', variante: 'mas' as const },
+];
+// La historia de la nube: la primera forma es la que la nube arma en el hero (y su respaldo).
+const formas = [
+  { src: '/media/ilustracion/hero-chancado-960.webp', etiqueta: 'Edificio de chancado', alt: 'Edificio de chancado con su correa, en nube de puntos' },
+  { src: '/media/ilustracion/hero-espesador-960.webp', etiqueta: 'Espesador', alt: 'Espesador en nube de puntos' },
+  { src: '/media/ilustracion/hero-convertidor-960.webp', etiqueta: 'Convertidor', alt: 'Convertidor en nube de puntos' },
+  { src: '/media/ilustracion/hero-chimenea-960.webp', etiqueta: 'Chimenea', alt: 'Chimenea con su ducto, en nube de puntos' },
+];
+const pasosHistoria = [
+  { rotulo: 'Chancado', titulo: 'Edificio y correa' },
+  { rotulo: 'Concentradora', titulo: 'Espesador' },
+  { rotulo: 'Fundición', titulo: 'Convertidor' },
+  { rotulo: 'Gases', titulo: 'Chimenea y ducto' },
+];
+const accionesProducto = [
+  { href: '#galeria', texto: 'Más información' },
+  { href: '/#contacto', texto: 'Consultar', variante: 'fantasma' as const },
+];
+// Las marcas del grupo salen de data/sites.json del kit, sin la casa matriz ni el sitio del fundador. Dominio si la
+// web está activa; si no, el aviso por defecto. Los logos son los de mcco.cl, con el alto de la maqueta.
+const logos: Record<string, { src: string; alto: number }> = {
+  asbuilt: { src: '/media/logos/marcas/asbuilt.svg', alto: 40 },
+  condron: { src: '/media/logos/marcas/condron.svg', alto: 64 },
+  '3dultra': { src: '/media/logos/marcas/3dultra.svg', alto: 60 },
+  monitorai: { src: '/media/logos/marcas/monitoria.svg', alto: 60 },
+  cupla: { src: '/media/logos/marcas/cupla.svg', alto: 44 },
+  ultrapaes: { src: '/media/logos/marcas/ultrapaes.svg', alto: 34 },
+};
+const marcas = sitios.filter((s) => logos[s.key]).map((s) => ({
+  nombre: s.name, logo: logos[s.key], frase: s.tagline, href: s.estado === 'activa' ? s.domain : undefined,
+}));
+---
+<Estandar title="Demo del estándar MCCO · Apple + antigravity"
+  description="Prueba de las piezas del estándar Apple + antigravity de @mcco/web-kit: barras, hero con campo y nube, historia, bloques, grilla, galería, cifras y marcas."
+  noindex={true} nav={nav} subnav={subnav}>
+  <link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <HeroEstandar titulo="Un solo estándar para las webs MCCO."
+    bajada="Barra global, sub-navegación, bloques a todo el ancho y acciones en píldora. Cada sitio pone su color."
+    acciones={[
+      { href: '#claro', texto: 'Ver los bloques' },
+      { href: '/demo-visual', texto: 'Ver el sistema visual', variante: 'fantasma' },
+    ]}
+    nube={{ respaldo: { src: formas[0].src, width: 960, height: 540, alt: formas[0].alt } }} campo />
+
+  <HistoriaNube id="historia" titulo="Historia en nube de puntos."
+    bajada="La nube baja desde el hero y, mientras recorres esta sección, pasa de un activo al siguiente y se enciende su paso."
+    activos={formas} pasos={pasosHistoria} />
+
+  <Bloque tono="claro" id="claro" aria-labelledby="claro-titulo">
+    <h2 class="std-h2" id="claro-titulo">Bloque claro.</h2>
+    <p class="std-tagline">Fondo blanco y un título grande, con poco texto debajo.</p>
+    <Acciones acciones={acciones} />
+  </Bloque>
+
+  <Bloque tono="negro" id="negro" aria-labelledby="negro-titulo">
+    <h2 class="std-h2" id="negro-titulo">Bloque negro.</h2>
+    <p class="std-tagline">La sub-navegación pasa a su versión oscura cuando este bloque queda debajo.</p>
+    <Acciones acciones={acciones} />
+  </Bloque>
+
+  <Bloque tono="parchment" id="parchment" aria-labelledby="parchment-titulo">
+    <h2 class="std-h2" id="parchment-titulo">Bloque parchment.</h2>
+    <p class="std-tagline">Separa una sección de otra sin usar líneas. Aquí las acciones van en tamaño chico.</p>
+    <div id="acciones"><Acciones acciones={acciones} tamano="chica" /></div>
+  </Bloque>
+
+  <Bloque tono="negro-suave" id="negro-suave" aria-labelledby="negro-suave-titulo">
+    <h2 class="std-h2" id="negro-suave-titulo">Bloque negro suave.</h2>
+    <p class="std-tagline">Alterna con el negro en grillas y secciones largas.</p>
+    <Acciones acciones={acciones} />
+    <p class="std-fina">La letra fina sobre negro también cumple el contraste AA.</p>
+  </Bloque>
+
+  <GrillaProductos id="productos" aria-label="Grilla de productos">
+    <Producto titulo="Tarjeta ancha" nivel={2} tono="parchment" ancho
+      bajada="Ocupa las dos columnas, con un título más grande y la foto abajo." acciones={accionesProducto}
+      foto={{ src: '/media/video/dron-faena-poster.webp', width: 1280, height: 720, encuadre: '50% 45%', origen: 'real',
+        alt: 'Aisladores de una línea de alta tensión vistos desde un dron' }} />
+    <Producto titulo="Tarjeta negra" nivel={2} tono="negro"
+      bajada="La bajada y la píldora fantasma pasan a su versión clara." acciones={accionesProducto}
+      foto={{ src: '/media/ilustracion/convertidor-peirce-smith-960.webp', width: 960, height: 540, origen: 'ilustracion',
+        alt: 'Convertidor de fundición en nube de puntos' }} />
+    <Producto titulo="Tarjeta parchment" nivel={2} tono="parchment"
+      bajada="El encuadre elige qué parte de la foto queda a la vista." acciones={accionesProducto}
+      foto={{ src: '/media/real/proyecto-mineria-800.webp', width: 800, height: 600, encuadre: '60% 40%', origen: 'real',
+        alt: 'Escáner FARO Focus sobre trípode en una plataforma de planta, con la cordillera al fondo' }} />
+    <Producto titulo="Tarjeta clara" nivel={2} tono="claro"
+      bajada="Fondo blanco, el mismo de la grilla." acciones={accionesProducto}
+      foto={{ src: '/media/render/chimenea-verticalidad.webp', width: 782, height: 784, encuadre: '50% 55%', origen: 'render',
+        alt: 'Modelo de una chimenea coloreado según su desviación de la vertical' }} />
+    <Producto titulo="Tarjeta negra suave" nivel={2} tono="negro-suave"
+      bajada="Un negro un poco más claro, para alternar con la tarjeta negra." acciones={accionesProducto}
+      foto={{ src: '/media/ilustracion/molino-sag-960.webp', width: 960, height: 540, origen: 'ilustracion',
+        alt: 'Molino SAG en nube de puntos' }} />
+  </GrillaProductos>
+
+  <Bloque tono="claro" id="galeria" aria-labelledby="galeria-titulo">
+    <h2 class="std-h2" id="galeria-titulo">Galería en cuadros.</h2>
+    <p class="std-tagline">Cada imagen lleva su rótulo de origen y todas miden lo mismo.</p>
+    <Galeria items={[
+      { tipo: 'imagen', src: '/media/real/faro-closeup-800.webp', width: 800, height: 600, origen: 'real',
+        alt: 'Escáner láser FARO Focus en primer plano, dentro de una nave industrial', pie: 'Escáner láser en terreno.' },
+      { tipo: 'imagen', src: '/media/ilustracion/rajo-atacama-amanecer-960.webp', width: 960, height: 540, origen: 'ilustracion',
+        alt: 'Rajo abierto en el desierto al amanecer', pie: 'Atmósfera. No muestra un proyecto.' },
+      { tipo: 'video', src: '/media/video/faro-terreno.mp4', poster: '/media/video/faro-terreno-poster.webp', width: 1280, height: 720,
+        origen: 'real', alt: 'Tomas de un levantamiento con escáner FARO en faena', pie: 'Del escaneo en terreno al modelo en pantalla.' },
+      { tipo: 'imagen', src: '/media/esquema/estaciones-escaneo.svg', width: 800, height: 500, origen: 'esquema',
+        alt: 'Esquema en planta de cinco estaciones de escaneo alrededor de un equipo', pie: 'Estaciones de escaneo alrededor de un equipo.' },
+      { tipo: 'imagen', src: '/media/ilustracion/caex-ultraclase-960.webp', width: 960, height: 540, origen: 'ilustracion',
+        alt: 'Camión minero de extracción en nube de puntos' },
+    ]} />
+  </Bloque>
+
+  <Bloque tono="negro" id="mosaico" aria-labelledby="mosaico-titulo">
+    <h2 class="std-h2" id="mosaico-titulo">Galería en mosaico.</h2>
+    <p class="std-tagline">Cada imagen conserva su proporción, sin recortes, y nunca queda más ancha que su archivo.</p>
+    <Galeria formato="mosaico" items={[
+      { tipo: 'imagen', src: '/media/render/chimenea-verticalidad.webp', width: 782, height: 784, origen: 'render',
+        alt: 'Modelo de una chimenea coloreado según su desviación de la vertical' },
+      { tipo: 'imagen', src: '/media/esquema/estaciones-escaneo.svg', width: 800, height: 500, origen: 'esquema',
+        alt: 'Esquema en planta de cinco estaciones de escaneo alrededor de un equipo' },
+      { tipo: 'imagen', src: '/media/real/proyecto-mineria-800.webp', width: 800, height: 600, origen: 'real',
+        alt: 'Escáner FARO Focus sobre trípode en una plataforma de planta, con la cordillera al fondo' },
+      { tipo: 'video', src: '/media/video/dron-faena.mp4', poster: '/media/video/dron-faena-poster.webp', width: 1280, height: 720,
+        origen: 'real', alt: 'Inspección aérea con dron sobre una torre de alta tensión' },
+      { tipo: 'imagen', src: '/media/ilustracion/chancador-nube-960.webp', width: 960, height: 540, origen: 'ilustracion',
+        alt: 'Chancador primario en nube de puntos' },
+    ]} />
+  </Bloque>
+
+  <Bloque tono="parchment" id="cifras" aria-labelledby="cifras-titulo">
+    <h2 class="std-h2" id="cifras-titulo">Cifras.</h2>
+    <p class="std-tagline">Números grandes en el color de acción, cada uno con su etiqueta debajo.</p>
+    <div class="demo-cifras">
+      <Cifras items={[
+        { valor: 44, etiqueta: 'píxeles de área táctil, como mínimo' },
+        { valor: 18, etiqueta: 'píxeles de radio en las tarjetas' },
+        { valor: '4,5:1', etiqueta: 'de contraste mínimo para el texto' },
+      ]} nota="Son valores del propio estándar. En un sitio, cada cifra sale de un dato verificado." />
+    </div>
+  </Bloque>
+
+  <Bloque tono="negro" id="marcas" aria-labelledby="marcas-titulo">
+    <h2 class="std-h2" id="marcas-titulo">Tarjetas de marca.</h2>
+    <p class="std-tagline">El logo, una frase y el sitio de cada marca. Si el sitio no está listo, va un aviso en su lugar.</p>
+    <TarjetasMarca marcas={marcas} />
+  </Bloque>
+
+  <footer slot="pie">
+    <Bloque tono="parchment">
+      <p class="std-fina">Aquí va el pie de cada sitio. Debajo, el kit agrega el bloque Grupo MCCO.</p>
+    </Bloque>
+  </footer>
+</Estandar>
+
+<style>
+  /* Las cifras van alineadas a la izquierda en una columna, como en la maqueta junto al mapa. */
+  .demo-cifras { max-width: 480px; margin: 40px auto 0; text-align: left; }
+</style>

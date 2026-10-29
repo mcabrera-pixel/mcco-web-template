@@ -68,7 +68,7 @@ services:
 
 # Rutas que existen pero no se indexan ni entran al sitemap (además de /gracias, /contacto-error y /404)
 sitemap:
-  exclude: [/demo-visual, /demo-visual-oscura]   # demo del sistema visual del kit (noindex)
+  exclude: [/demo-visual, /demo-visual-oscura, /demo-estandar]   # demos del sistema visual y del estándar del kit (noindex)
 faq:
   # EDITAR en el sitio nuevo: respuestas autocontenidas de 40-80 palabras, citables sueltas.
   - q: "¿Qué es esta plantilla?"

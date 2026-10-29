@@ -1,518 +1,294 @@
-# DESIGN.md — MCCO Copper
+# Estándar visual MCCO: Apple + antigravity
 
-> Sistema de diseño para sitios web de marca MCCO Copper SpA. Industrial editorial. Inspirado en Tesla minimal + WIRED magazine + Stripe trust signals + Linear restraint. Adaptado a contexto minero chileno.
->
-> Última actualización: 2026-05-06
-> Versión: 1.0
-> Para usar en: mccocopper.cl, propuestas comerciales, deliverables a clientes mineros
+## Visión general
 
----
+Las webs MCCO usan bloques a todo el ancho, títulos grandes y texto breve, con la imagen del activo bajo las acciones. Alternan blanco, parchment y negro. El cambio de superficie separa las secciones y un solo color de acción identifica enlaces, botones y foco.
 
-## 1. Visual Theme
+Esta guía adapta el lenguaje de apple.com descrito en `design-md/apple/DESIGN.md` de VoltAgent/awesome-design-md. Conserva su estructura de referencia y los valores que adopta MCCO, incorpora antigravity y omite las piezas de tienda que no usa el grupo. El aviso MIT está al final. Si la hoja de Apple difiere de la implementación, mandan los tokens y componentes de `@mcco/web-kit`, documentados en `docs/ESTANDAR.md`.
 
-**Industrial editorial** — la solidez técnica de la minería chilena combinada con la claridad estructural de revistas técnicas.
+El kit fija la tipografía, las superficies, la composición y el movimiento. Cada sitio aporta su color de acción, sus activos y su contenido. La página `src/pages/demo-estandar.astro` muestra las piezas juntas con el layout `Estandar`.
 
-**Mood:**
-- Solid (no flotante, no glass morphism)
-- Earned (weathered surfaces, scratch marks, no perfection)
-- Direct (no fluff, no hype, datos concretos)
-- Chilean (warm tones, andean references, español sin anglicismos)
-- Confident (sin gritar, sin pedir disculpa)
+La plantilla conserva las páginas v1, entre ellas inicio, blog, 404 y gracias, con IBM Plex y los valores actuales de `src/styles/theme.css`. La demo del estándar no importa esa hoja porque sus reglas de `body`, tipografía y ancho de `main` interfieren con el layout nuevo. El bloque comentado de variables en `theme.css` indica dónde poner el color del sitio cuando se migre esa hoja.
 
-**Inspiraciones cruzadas:**
-- **Tesla** — minimal industrial premium pero chileno (no californiano)
-- **WIRED magazine** — densidad editorial cuando la página tiene mucho contenido técnico
-- **Stripe** — trust signals (proof, casos reales, datos auditables)
-- **Linear** — restraint en interactions (no over-animated)
-- **The Atlantic / Bloomberg** — tipografía editorial premium
+## Color
 
-**Anti-inspiraciones:**
-- Sitios "AI-powered" cualquier (purple gradients, "transform your business")
-- SaaS tipo Notion (demasiado friendly, demasiado playful)
-- Sitios mineros chilenos legacy (1990s-2010s aesthetics, comic sans, gif)
+### Acción
 
----
+Cada web tiene un color de acción con variantes para cada fondo. El azul de Apple es el valor por defecto. El sitio declara sus variantes en el `:root` de `src/styles/theme.css`, sin cambiar los tokens `--std-*` del kit.
 
-## 2. Color Palette
+| Variable del sitio | Valor por defecto | Uso |
+|---|---|---|
+| `--accion` | `#0066cc` | Texto y enlaces sobre blanco |
+| `--accion-boton` | `#0071e3` | Píldora llena con texto blanco |
+| `--accion-foco` | `#0071e3` | Anillo de foco sobre claro |
+| `--accion-oscuro` | `#2997ff` | Texto, enlaces y foco sobre negro |
+| `--campo-claro` | `var(--accion-oscuro)` | Tono claro del campo |
+| `--campo-oscuro` | `var(--accion)` | Tono oscuro del campo |
 
-Paleta de **3 dominantes + 1 accent + functional tokens.**
+La hoja del kit usa `:where(:root)` para estos valores. El `:root` del sitio tiene mayor especificidad y gana sin depender del orden de las hojas. Cada variante debe cumplir 4,5:1 en texto y botones, y 3:1 en el anillo de foco. No se agrega un segundo color para otras acciones.
 
-### Brand colors
+En mcco.cl, el texto usa `#a74716`, el botón `#ae4713`, el foco `#ba521a` y la variante sobre negro `#f08b50`. Sus tonos del campo son `#e0892d` y `#7c2d10`. Son valores del piloto, no los valores iniciales de esta plantilla.
 
-```css
-:root {
-  /* Dominants — usar para 90% del sitio */
-  --brand-charcoal:  #1A1A1A;  /* primary surface dark, text on light */
-  --brand-cream:     #F4EFE6;  /* primary surface light, text on dark */
-  --brand-stone:     #6B6660;  /* secondary text, borders, muted */
+### Superficies y texto
 
-  /* Accent — usar < 10% para CTAs, highlights, links */
-  --brand-copper:    #B8542A;  /* terracotta industrial — accent agresivo */
+| Token del kit | Valor | Uso |
+|---|---|---|
+| `--std-blanco` | `#ffffff` | Hero y bloques claros |
+| `--std-parchment` | `#f5f5f7` | Alternancia clara y pie |
+| `--std-negro` | `#000000` | Barra global e historia |
+| `--std-negro-1` | `#272729` | Superficie oscura |
+| `--std-negro-2` | `#2a2a2c` | Variación de superficie oscura |
+| `--std-negro-3` | `#161617` | Bloque negro suave |
+| `--std-tinta` | `#1d1d1f` | Títulos y cuerpo sobre claro |
+| `--std-tinta-80` | `#333336` | Bajadas y enlaces de 12 px |
+| `--std-gris` | `#6e6e73` | Letra fina sobre claro |
+| `--std-gris-claro` | `#a1a1a6` | Letra fina sobre oscuro |
+| `--std-linea` | `#d2d2d7` | Líneas finas |
 
-  /* Optional metallic — solo para deliverables premium clientes mayores */
-  --brand-bronze:    #8B6F47;  /* sub-accent, evitar abusar */
+Los bloques oscuros llevan `data-std-oscuro`, que activa las variantes claras de las piezas interiores. Las tarjetas de marca usan `#1d1d1f` sobre negro, una excepción a las seis superficies tomada de la prueba aprobada. El valor `#333336` de las bajadas también viene de esa prueba y reemplaza el `#333333` de la hoja de Apple.
 
-  /* Functional tokens */
-  --color-success:   #4A6741;  /* verde minero conservador, no neón */
-  --color-warning:   #C8843E;  /* ámbar industrial */
-  --color-error:     #8B2828;  /* rojo conservador, no fluorescente */
+### Líneas y degradados
 
-  /* Surfaces */
-  --surface-page:    var(--brand-cream);
-  --surface-card:    #FFFFFF;
-  --surface-overlay: rgba(26, 26, 26, 0.85);
-  --surface-dark:    var(--brand-charcoal);
+Las líneas de 1 px sirven para separar cifras y contenido denso. Los bloques a todo el ancho se separan por color, sin marcos ni sombras. No se usan degradados decorativos de fondo. La mezcla angular de tonos del campo antigravity pertenece al efecto definido más abajo.
 
-  /* Text */
-  --text-primary:    var(--brand-charcoal);
-  --text-secondary:  var(--brand-stone);
-  --text-on-dark:    var(--brand-cream);
-  --text-link:       var(--brand-copper);
-}
-```
-
-### Reglas de aplicación
-
-- **Hero:** charcoal sobre cream OR cream sobre charcoal (depende caso). NUNCA ambos juntos en mismo viewport sin razón.
-- **CTAs primary:** copper sobre cream (alto contraste).
-- **CTAs secondary:** charcoal outline sobre cream, sin fill.
-- **Borders:** stone con opacity 30-50%, NUNCA copper como border (chillón).
-- **Backgrounds:** cream default, charcoal para sections de "depth" (testimonials, footer).
-- **Gradients:** PROHIBIDOS excepto overlay sutil charcoal-to-transparent en imágenes (para legibilidad de overlay text).
-
-### Anti-patterns específicos MCCO
-
-- ❌ Purple, lavender, indigo, violet — slop trigger
-- ❌ Glass morphism / frosted backdrop-filter
-- ❌ Neon green / electric blue — fuera de contexto industrial chileno
-- ❌ Más de 4 colores en la misma section
-- ❌ Copper como dominante (es accent, < 10%)
-
----
-
-## 3. Typography
+## Tipografía
 
 ### Familias
 
-```css
-:root {
-  /* Display — solo H1, H2 critical, hero */
-  --font-display: "Recoleta", "Tiempos Headline", Georgia, serif;
-
-  /* Body — texto general */
-  --font-body: "IBM Plex Sans", "Inter Tight", system-ui, sans-serif;
-
-  /* Mono — code, IDs, números técnicos, datos */
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Berkeley Mono", monospace;
-
-  /* Numérica/data tabular */
-  --font-tabular: var(--font-mono);  /* tabular-nums siempre para tablas de números */
-}
-```
-
-**Por qué Recoleta:** display serif chileno-friendly (warmer que neutral grotesks), proyecta editorial premium sin ser "luxury alienado".
-
-**Por qué IBM Plex Sans:** body grotesk técnico pero humano. Inter Tight (variant) si Plex no disponible, NUNCA Inter regular.
-
-**Por qué JetBrains Mono:** monoespaciado moderno con buena legibilidad para números (RUTs, montos, coordenadas técnicas).
-
-### Type scale
-
-```css
-:root {
-  /* Type scale — clamp() para responsive automático */
-  --type-xs:   clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);   /* 12-14px caption */
-  --type-sm:   clamp(0.875rem, 0.85rem + 0.125vw, 0.9375rem); /* 14-15px small */
-  --type-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);     /* 16-18px body */
-  --type-lg:   clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem); /* 18-20px lead */
-  --type-xl:   clamp(1.5rem, 1.3rem + 1vw, 1.875rem);       /* 24-30px h3 */
-  --type-2xl:  clamp(2rem, 1.7rem + 1.5vw, 2.5rem);         /* 32-40px h2 */
-  --type-3xl:  clamp(2.75rem, 2.2rem + 2.75vw, 4rem);       /* 44-64px h1 */
-  --type-display: clamp(3.5rem, 2.5rem + 5vw, 6rem);        /* 56-96px hero */
-
-  /* Line heights */
-  --leading-tight: 1.1;    /* display, h1, h2 */
-  --leading-snug:  1.3;    /* h3, lead */
-  --leading-normal: 1.5;   /* body */
-  --leading-relaxed: 1.7;  /* texto largo, articles */
-
-  /* Letter spacing */
-  --tracking-tight:   -0.02em;  /* display, h1 */
-  --tracking-normal:  0;        /* body */
-  --tracking-wide:    0.05em;   /* uppercase tags, eyebrow text */
-  --tracking-wider:   0.1em;    /* nav links, all-caps section labels */
-}
-```
-
-### Reglas de aplicación
-
-- **H1 (hero):** Recoleta, type-display, leading-tight, tracking-tight
-- **H2:** Recoleta, type-2xl o 3xl, leading-tight
-- **H3:** IBM Plex Sans Bold, type-xl, leading-snug
-- **Body:** IBM Plex Sans Regular, type-base, leading-normal
-- **Lead paragraph (después h1/h2):** type-lg, leading-relaxed, max-width 60ch
-- **Caption / footnote:** type-sm, color stone
-- **All-caps eyebrow** (above titles): type-xs, tracking-wider, uppercase
-- **Números data:** font-tabular SIEMPRE para alineación correcta
-- **Code/IDs:** font-mono, type-sm
-
-### Antipatterns
-
-- ❌ Inter en cualquier weight (banned per anti-ai-slop)
-- ❌ Roboto, Arial, system-ui (banned)
-- ❌ Más de 3 weights por familia (peso de carga)
-- ❌ Mezclar > 2 families en mismo viewport
-- ❌ Tipografía ALL CAPS en párrafos largos (solo eyebrow/labels)
-
----
-
-## 4. Components
-
-### Buttons
-
-```css
-/* Primary CTA */
-.btn-primary {
-  background: var(--brand-copper);
-  color: var(--brand-cream);
-  padding: 0.875rem 1.75rem;  /* generous padding */
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: var(--type-base);
-  letter-spacing: -0.005em;
-  border: none;
-  border-radius: 2px;  /* sutil, no muy redondeado — industrial */
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-.btn-primary:hover {
-  background: #A0451F;  /* copper darkened */
-  transform: translateY(-1px);
-}
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-/* Secondary CTA */
-.btn-secondary {
-  background: transparent;
-  color: var(--brand-charcoal);
-  padding: 0.875rem 1.75rem;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--type-base);
-  border: 1.5px solid var(--brand-charcoal);
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.btn-secondary:hover {
-  background: var(--brand-charcoal);
-  color: var(--brand-cream);
-}
-
-/* Ghost (links secundarios) */
-.btn-ghost {
-  background: transparent;
-  color: var(--brand-charcoal);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1.5px;
-}
-```
-
-**Reglas:** UN primary por viewport. NUNCA dos primary CTAs lado a lado con peso visual idéntico (Impeccable lo flagea como ambiguous priority).
-
-### Cards
-
-```css
-.card {
-  background: var(--surface-card);
-  padding: 2rem;
-  border: 1px solid rgba(107, 102, 96, 0.15);  /* stone con low opacity */
-  border-radius: 4px;
-  transition: border-color 0.2s ease;
-  /* SIN box-shadow por default — usar selectivamente */
-}
-.card:hover {
-  border-color: rgba(107, 102, 96, 0.4);
-}
-
-/* Card con accent (hero feature) */
-.card-accent {
-  background: var(--brand-charcoal);
-  color: var(--brand-cream);
-  border: none;
-}
-
-/* PROHIBIDO en MCCO */
-.card-glass { /* NO USAR */
-  /* backdrop-filter: blur(...) — anti-pattern AI slop */
-}
-```
-
-### Inputs
-
-```css
-.input {
-  background: var(--surface-card);
-  border: 1.5px solid rgba(107, 102, 96, 0.3);
-  border-radius: 2px;
-  padding: 0.875rem 1rem;
-  font-family: var(--font-body);
-  font-size: var(--type-base);
-  color: var(--text-primary);
-  transition: border-color 0.2s ease;
-  /* Label asociado siempre, NO placeholder-as-label */
-}
-.input:focus {
-  outline: none;
-  border-color: var(--brand-copper);
-  /* Sin glow — industrial, no SaaS friendly */
-}
-.input:invalid:not(:focus):not(:placeholder-shown) {
-  border-color: var(--color-error);
-}
-
-/* Para inputs de RUT chileno */
-.input-rut {
-  font-family: var(--font-mono);
-  /* Format on blur: 12.345.678-9 */
-}
-
-/* Para inputs de monto CLP */
-.input-monto {
-  font-family: var(--font-tabular);
-  /* Format: $3.500.000 — punto separador miles */
-}
-```
-
-### Navigation
-
-```css
-.nav {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--type-sm);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;  /* eyebrow style */
-}
-.nav-link {
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: 0.5rem 0;
-  border-bottom: 1.5px solid transparent;
-  transition: border-color 0.2s ease;
-}
-.nav-link:hover,
-.nav-link[aria-current="page"] {
-  border-bottom-color: var(--brand-copper);
-}
-```
-
----
-
-## 5. Layout
-
-### Grid system
-
-12-col responsive con breakpoints:
-
-```css
-:root {
-  --container-narrow: 64rem;   /* 1024px — para artículos/text-heavy */
-  --container-default: 80rem;  /* 1280px — default sites */
-  --container-wide: 96rem;     /* 1536px — solo si justifica (data dashboards) */
-  --container-edge: 100%;      /* full-bleed */
-
-  /* Spacing scale (base 4px) */
-  --space-1: 0.25rem;   /* 4 */
-  --space-2: 0.5rem;    /* 8 */
-  --space-3: 0.75rem;   /* 12 */
-  --space-4: 1rem;      /* 16 */
-  --space-6: 1.5rem;    /* 24 */
-  --space-8: 2rem;      /* 32 */
-  --space-12: 3rem;     /* 48 */
-  --space-16: 4rem;     /* 64 */
-  --space-24: 6rem;     /* 96 */
-  --space-32: 8rem;     /* 128 — section padding vertical default */
-}
-
-@media (min-width: 768px) {
-  /* tablet */
-}
-
-@media (min-width: 1024px) {
-  /* desktop */
-}
-
-@media (min-width: 1536px) {
-  /* wide */
-}
-```
-
-### Composition rules
-
-- **Hero:** asymmetric — texto en col 1-7, imagen full-bleed en col 7-12 (right-anchored). NUNCA centrado simétrico.
-- **Sections:** padding vertical generoso (--space-24 mobile, --space-32 desktop).
-- **Cards grid:** evitar 2x2 perfecta. Preferir alturas variables o grid-breaking element.
-- **Whitespace:** generous negative space O controlled density. NUNCA promedio aburrido.
-
----
-
-## 6. Depth / Elevation
-
-```css
-:root {
-  /* Shadows — usar selectivamente, no por default */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);    /* hover sutil */
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);    /* cards lifted */
-  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.1);   /* modals, popovers */
-  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.15);  /* hero elements */
-
-  /* Z-index */
-  --z-base: 0;
-  --z-overlay: 10;
-  --z-modal: 100;
-  --z-toast: 1000;
-}
-```
-
-**Regla:** preferir borders sobre shadows. La estética industrial de MCCO favorece edges definidos, no flotantes.
-
----
-
-## 7. Do's and Don'ts
-
-### Do's
-
-- ✅ Usar Recoleta + IBM Plex Sans + JetBrains Mono (las 3 familias y nada más)
-- ✅ Charcoal + Cream + Stone como dominantes, copper como accent
-- ✅ Asymmetric hero composition (right-anchored o left-anchored)
-- ✅ Generous whitespace en sections principales
-- ✅ Tabular-nums en tablas de números, RUTs, montos
-- ✅ Borders 1.5px con stone color para definición sin shadow
-- ✅ Foto real cuando sea posible (chancador, faena, equipo MCCO real)
-- ✅ Microcopy contextual debajo de CTAs ("5 min, sin tarjeta")
-- ✅ All-caps eyebrow above section titles, uppercase + tracking-wider
-
-### Don'ts
-
-- ❌ Inter, Roboto, Arial, system-ui (banned)
-- ❌ Purple, indigo, lavender, violet (banned)
-- ❌ Glass morphism, frosted backdrops (banned)
-- ❌ Bento boxes 2x2 simétricas (banned)
-- ❌ Dual CTAs idénticos peso visual (banned)
-- ❌ Stock 3D abstract (esferas holográficas, mesh gradients)
-- ❌ "AI-powered", "Transform your X" copy (banned)
-- ❌ Más de 3 colores en mismo section
-- ❌ Auto-playing music/video con sound
-- ❌ Pop-ups intrusivos al cargar (newsletter, chat) en propuestas serias
-
----
-
-## 8. Responsive Behavior
-
-### Breakpoints
-
-```
-Mobile:  < 768px   (1 col, navigation hamburger)
-Tablet:  768-1023  (2 col en cards, navigation visible)
-Desktop: ≥ 1024    (12-col grid, navigation full)
-Wide:    ≥ 1536    (max-width container, no estiramiento extremo)
-```
-
-### Hero responsive
-
-- Desktop: imagen full-bleed derecha, texto izquierda
-- Tablet: imagen above, texto below (stacked)
-- Mobile: imagen above (cropped si full HD muy alto), texto below
-- **Si hero tiene video:** desktop only. Mobile/tablet → still image fallback (regla `web-design-animate.md`)
-
-### Typography responsive
-
-- Type scale usa `clamp()` automático (ver sección 3)
-- Display font reduce 30-40% en mobile vs desktop
-- Body font sube ligeramente en mobile (mejor legibilidad pulgar lectura)
-
-### Touch targets
-
-- Mínimo 44×44px (Apple HIG / Google Material)
-- CTAs en mobile: full-width o casi
-- Inputs en mobile: padding generoso vertical
-
----
-
-## 9. Agent Prompt Guide
-
-Cuando le pidas a Claude Code/Cursor/Codex que genere algo aplicando este DESIGN.md, usá este vocabulario:
-
-### Frases que activan el sistema correctamente
-
-- ✅ "Apply the MCCO Copper design system from `DESIGN-mcco-copper.md`"
-- ✅ "Use brand-charcoal as primary surface, brand-copper as CTA accent only"
-- ✅ "Use Recoleta display + IBM Plex Sans body, never Inter"
-- ✅ "Asymmetric hero, right-anchored composition"
-- ✅ "Industrial editorial aesthetic, like Tesla minimal meets WIRED magazine"
-
-### Frases que disparan AI slop (evitar)
-
-- ❌ "Make it modern and clean" (vago, default → slop)
-- ❌ "Use a nice color palette" (default → purple gradient)
-- ❌ "Modern fonts" (default → Inter)
-- ❌ "Beautiful design" (vacío)
-
-### Anti-patterns específicos a recordarle a Claude
-
-```
-Cuando construyas, NUNCA uses:
-- Inter, Roboto, Arial, system-ui fonts
-- Purple/indigo/violet colors anywhere
-- Glass morphism, backdrop-filter blur on cards
-- Bento 2x2 symmetric grid for features
-- Two CTAs with identical visual weight
-- "AI-powered" badges or "Transform your X" copy
-- Stock 3D abstract imagery for hero
-```
-
-### Vocabulary específico MCCO
-
-- "Decoration discipline" (apply across colors and motion)
-- "Right-anchored hero" (composition reference)
-- "Eyebrow label uppercase tracking-wider" (above titles)
-- "Tabular-nums for all numeric data" (RUTs, CLP, dates)
-- "Industrial editorial" (overall aesthetic direction)
-- "Copper as accent only, < 10% of viewport"
-
----
-
-## Validación post-build
-
-Después de construir cualquier página con este DESIGN.md:
-
-```
-/impeccable critique
-```
-
-Score esperado: ≥ 32/40 (good).
-
-Si < 28: revisar adherencia al DESIGN.md, posiblemente cleanup pass:
-
-```
-/impeccable polish
-/impeccable harden
-/impeccable adapt
-```
-
-Y re-audit.
-
----
-
-## Versioning
-
-- **v1.0** (2026-05-06): Initial release. Industrial editorial aesthetic. Charcoal/cream/copper palette. Recoleta + IBM Plex.
-
-Cuando se cambie significativamente la identidad de marca:
-- Bump version (v1.1, v2.0)
-- Mantener archivo de tokens previo en `examples/archive/DESIGN-mcco-copper-v1.0.md`
-- Documentar migration path para sitios existentes
+Los titulares usan `-apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif`. El cuerpo usa la misma pila con `"SF Pro Text"`. En equipos sin SF Pro se carga Inter variable autoalojada desde `styles/fuentes/` del kit, con su licencia OFL. El layout precarga el subconjunto latino para el H1.
+
+El estándar no carga Google Fonts. El peso del cuerpo es 400, el de los titulares es 600 y la escala admite 300, 400, 600 y 700. No se usa 500.
+
+### Jerarquía
+
+La escala completa es 56, 48, 40, 34, 28, 24, 21, 17, 14 y 12 px. Estas son las clases de la hoja compartida y sus valores de escritorio:
+
+| Clase o uso | Tamaño | Peso | Interlineado | Espaciado entre letras |
+|---|---|---|---|---|
+| `.std-h1` | 56 px | 600 | 1,07 | −0,02 em |
+| `.std-h2` | 48 px | 600 | 1,08 | −0,02 em |
+| `.std-h3` | 40 px | 600 | 1,1 | −0,015 em |
+| `.std-lead` | 28 px | 400 | 1,14 | 0,007 em |
+| `.std-tagline` | 24 px | 400 | 1,25 | 0,009 em |
+| Cuerpo `.std` | 17 px | 400 | 1,44 | −0,022 em |
+| `.std-fina` | 12 px | 400 | 1,33 | −0,01 em |
+
+Los títulos tienen espaciado negativo y el cuerpo mantiene el intervalo de lectura de 1,44 a 1,47 de la referencia, con 1,44 en la hoja del kit. Las bajadas conservan su espaciado positivo. El rótulo de origen usa 11 px: es la excepción a la escala, no un tamaño para párrafos o información legal.
+
+## Composición
+
+### Espaciado y grilla
+
+La referencia usa una base de 8 px y pasos de 4, 8, 12, 17, 24, 32, 48 y 80 px. En los componentes MCCO, `Bloque` deja 80 px arriba y abajo, y 22 px a cada lado. En ventanas de hasta 640 px pasa a 56 px verticales y 16 px laterales.
+
+Los títulos, bajadas y acciones se centran. El H1 tiene un máximo de 900 px, el H2 de 860 px, la bajada principal de 760 px y `.std-tagline` de 720 px. Las barras, galerías y tarjetas de marca usan contenedores de hasta 1024 px. La grilla de productos ocupa el ancho disponible, con dos columnas iguales y 12 px entre piezas.
+
+La imagen queda debajo del texto y de las acciones. El espacio alrededor permite reconocer el activo sin agregar bordes, rótulos numerados ni adornos. El pie concentra los enlaces en columnas de 12 px sobre parchment, con una línea legal.
+
+## Profundidad
+
+Las superficies son planas. La sub-navegación usa fondo translúcido y desenfoque para mantener la lectura sobre el contenido que pasa por debajo.
+
+La única sombra del sistema es `rgba(0,0,0,.22) 3px 5px 30px 0`, guardada en `--std-sombra`. Se reserva para imágenes de producto apoyadas sobre una superficie. No se aplica a títulos, botones ni tarjetas.
+
+## Formas e imágenes
+
+| Pieza | Radio |
+|---|---|
+| Bloque a todo el ancho | 0 |
+| Tarjeta de galería o marca | 18 px |
+| Píldora | 980 px |
+
+Las imágenes tienen `max-width: 100%` y `height: auto` en la base. Cada componente define el recorte que necesita. `Producto` admite `foto.encuadre` como `object-position`, además de `srcset` y `sizes`. Las imágenes de contenido llevan dimensiones y texto alternativo que describa lo que se ve.
+
+En `Galeria`, el formato `cuadros` recorta a 4:3. El mosaico conserva la proporción, sin recortar ni ampliar una imagen más allá del ancho de su archivo. Una captura pequeña se presenta pequeña.
+
+## Componentes
+
+### Navegación
+
+El layout `@mcco/web-kit/layouts/Estandar.astro` reúne `Base`, `NavGlobal` y `SubNav`, coloca el contenido dentro de `main` y agrega el pie del grupo. Acepta `title`, `description`, `nav` y `subnav`. El slot `head` permite sumar el favicon y el slot `pie` recibe el pie propio del sitio antes del bloque Grupo MCCO.
+
+`NavGlobal` es una barra negra de 44 px con el logo en claro y enlaces de 12 px. En hasta 833 px muestra un botón de menú. La bandeja se puede abrir con teclado y cerrar con Escape, al hacer clic fuera, al salir el foco o al volver al ancho de escritorio. Sin JavaScript, los enlaces siguen disponibles. La página actual se identifica con `aria-current="page"`, sin una marca visual adicional.
+
+`SubNav` mide 52 px, queda fija arriba al bajar y mantiene la acción principal visible. En hasta 833 px oculta los enlaces de sección. En hasta 640 px mide 48 px y usa `textoCorto` para la acción. Cambia al tono oscuro cuando tiene debajo un bloque negro a todo el ancho.
+
+### Acciones
+
+`Acciones` recibe una lista con `href`, `texto` y `variante`. La variante `llena` es la predeterminada, `fantasma` tiene borde y fondo transparente, y `mas` es un enlace de texto con un chevrón decorativo agregado por CSS. No se escriben flechas en el texto.
+
+La píldora normal usa texto de 17 px, relleno de 11 px por 22 px y un área táctil mínima de 44 × 44 px. Al presionarla se reduce a `scale(.95)`. Con `tamano="chica"`, el texto pasa a 12 px y el área táctil conserva 44 px aunque la píldora visible sea más baja. En el hero, la fantasma lleva fondo blanco para que los guiones del campo no dificulten la lectura.
+
+El foco es una línea de 2 px separada 3 px del borde, con esquinas rectas. No adopta el radio de foco de 4 px de la referencia de Apple. Dentro de un bloque oscuro usa `--accion-oscuro`.
+
+### Hero y bloques
+
+`HeroEstandar` contiene el único H1, una bajada y las acciones. Puede recibir `nube` con una imagen de respaldo y `campo` para activar los guiones detrás del texto. El título debe ser legible desde el primer pintado y es el elemento previsto como LCP. El hero incorpora su botón de pausa cuando tiene nube o campo.
+
+`Bloque` ofrece los tonos `claro`, `parchment`, `negro` y `negro-suave`. No tiene esquinas redondeadas. Se le asigna un `id` para los enlaces internos y `aria-labelledby` cuando el título nombra la sección.
+
+`HistoriaNube` recibe de uno a cuatro activos y un paso por activo. El primero debe coincidir con el respaldo del hero para dar continuidad al recorrido. El movimiento y las alternativas estáticas se describen en Antigravity.
+
+### Productos
+
+`GrillaProductos` contiene los componentes `Producto`. Cada producto tiene título, bajada y acciones arriba, y una foto a sangre con rótulo abajo. El título es H3 por defecto y puede ser H2 con `nivel={2}`, según la jerarquía de la página.
+
+La tarjeta tiene un alto mínimo de 640 px y una foto de 320 px. Con `ancho`, ocupa ambas columnas, su alto mínimo pasa a 700 px y la foto a 378 px. El título crece de 40 a 48 px. En hasta 640 px la tarjeta toma el alto de su contenido y la foto queda en 4:3 bajo el texto.
+
+### Galería
+
+`Galeria` acepta imágenes y videos con `origen`, dimensiones y `alt`, más un pie opcional. En `cuadros` muestra tres columnas, dos en hasta 833 px y una en hasta 640 px. En `mosaico` arma filas de unos 240 px, con 320 px como tope de alto y el ancho nativo de cada archivo como límite.
+
+El video requiere poster WebP, va en H.264 con `faststart` y se aloja en R2. Usa `muted`, `playsinline`, `loop` y `preload="none"`. El kit lo descarga y reproduce cuando está a la vista. Con movimiento reducido o ahorro de datos (`Save-Data`) queda el poster con un botón para reproducirlo.
+
+### Cifras y marcas
+
+`Cifras` muestra valores de 56 px en el color de acción, con etiqueta debajo, líneas finas y una nota opcional. En hasta 640 px baja a 48 px. El contenedor decide la alineación. Los números se agrupan como en Chile y se redondean a dos decimales. Un año o un código se pasa como texto: `valor: '2011'` evita que aparezca como `2.011`.
+
+`TarjetasMarca` presenta un logo, una frase y un dominio, o el aviso «Sitio en preparación». La tarjeta completa es enlace cuando tiene `href`. El logo usa una máscara CSS de un SVG o PNG transparente y un tono claro. Con colores forzados adopta el color del texto del sistema. La grilla tiene tres columnas, dos en hasta 900 px y una en hasta 640 px.
+
+### Pie y formularios
+
+El pie propio va en el slot `pie` del layout. Los datos de contacto y de entidad salen de `site.yaml` y del kit. El bloque Grupo MCCO se agrega después y puede desactivarse con `footer={false}` cuando corresponda.
+
+Esta guía no define un nuevo formulario ni estados de validación. Se conserva el contrato del formulario de cada sitio hasta su migración, sin copiar las piezas de búsqueda, compra o configuración de la tienda de Apple.
+
+## Uso del estándar
+
+Se reutilizan los componentes del kit y sus clases `std-*`. Un ajuste de geometría, navegación o comportamiento compartido se resuelve en el kit y llega al sitio mediante una versión fijada. Los colores de acción y activos propios se cambian en el sitio.
+
+Los bloques alternan superficies, los titulares mantienen el peso 600 y el cuerpo usa 17 px. Se evita añadir sombras, un segundo color de acción o radios intermedios para diferenciar secciones. Los textos deben poder leerse sin que termine una animación.
+
+## Adaptación a la pantalla
+
+| Condición | Cambio |
+|---|---|
+| Hasta 833 px de ancho | Menú compacto, sub-navegación sin enlaces de sección, productos en una columna y galería en dos |
+| Hasta 640 px de ancho | Sub-navegación de 48 px, bloques con 56 px de aire vertical, galería y marcas en una columna |
+| Hasta 640 px de ancho | H1 de 40 px, H2 de 34 px, H3 de 28 px y bajadas de 21 px |
+| Hasta 419 px de ancho | H1 de 34 px |
+| Hasta 900 px de ancho | Marcas en dos columnas y pasos de historia en dos columnas |
+| Desde 901 px de ancho y 700 px de alto | Historia fija durante su recorrido y presupuesto visual de computador |
+
+Los cortes de composición no sustituyen la condición del sistema visual: `(min-width: 901px) and (min-height: 700px)`. Un celular girado o una ventana de computador baja usa el presupuesto móvil si no cumple ambas dimensiones. Al redimensionar, los lienzos ajustan su búfer, la nube recalcula las anclas y la historia su altura. El campo reconstruye los anillos al cruzar ese corte.
+
+Los controles conservan un área táctil mínima de 44 × 44 px. Los enlaces a anclas llegan a su posición sin desplazamiento suave y dejan espacio para la sub-navegación.
+
+## Antigravity
+
+### Nube de puntos
+
+El sitio entrega de uno a cuatro activos en nube de puntos sobre negro. La entrada actual de `HistoriaNube` usa ilustraciones de 960 × 540 px. Todos los activos se muestrean con igual cantidad de puntos y un orden espacial para pasar de una forma a otra. La imagen del primer activo también se entrega al hero como respaldo con dimensiones y descripción.
+
+Después del primer pintado, los puntos suben desde abajo y arman ese activo en unos 2,6 s. La nube acompaña el scroll hasta la historia negra, con media opacidad durante el trayecto para dejar leer lo que cruza. Allí cambia de activo y enciende el paso que corresponde al progreso. El cursor dispersa puntos y un barrido de luz recorre la forma.
+
+Sobre blanco usa tinta y realces de `--accion-boton`, con chispas de `--accion-foco`. Sobre negro usa crema y `--accion-oscuro` con brillo. Un solo lienzo fijo recorre las anclas de la página.
+
+La historia queda fija solo con la condición de 901 × 700 px. En las demás ventanas, cambia mientras cruza la pantalla. Sin JavaScript, sin WebGL2, con movimiento reducido o si falla un activo, se muestran las ilustraciones fijas con sus rótulos y todos los pasos encendidos.
+
+### Campo de guiones
+
+El campo vive en el hero, detrás del texto. Los guiones pasan entre las letras sin recuadros blancos alrededor de los títulos. La píldora fantasma conserva su propio relleno para ser legible.
+
+| Parámetro | Computador | Presupuesto móvil |
+|---|---|---|
+| Separación entre anillos | 28 px | 24 px |
+| Separación entre guiones | 30 px | 26 px |
+| Radio interior | 46 px | 46 px |
+| Radio máximo | 1180 px | 760 px |
+| Banda: aparece, plena hasta, se apaga en | 150, 400, 680 px | 110, 280, 500 px |
+| Largo del guion | 2 a 7 px | 2 a 7 px |
+| Ancho del guion | 2 a 2,4 px | 2 a 2,4 px |
+| Opacidad lejana y en la banda | 0,13 y 0,85 | 0,13 y 0,85 |
+| Cantidad de guiones | 5184 | 2841 |
+
+Los guiones apuntan hacia afuera. El centro sigue a una guía que sigue al mouse con dos suavizados de 0,7 s, unos 1,4 s de retraso total. Sin cursor pasea despacio. Los anillos respiran y giran en sentidos alternos a 0,012 rad/s. El scroll no modifica ese giro: el campo sube con el hero.
+
+El color cambia según el ángulo y mezcla `--accion-boton`, `--campo-claro`, `--campo-oscuro` y el neutro `#48484a`. Sobre la nube, la opacidad baja a un tercio con un borde elíptico difuso. El borde inferior del hero también se difumina. Con movimiento reducido o sin WebGL2 se omite el campo porque es decorativo.
+
+### Pausa y carga
+
+Los botones del hero y de la historia comparten una sola pausa para nube y campo. Cambian entre «Pausar movimiento» y «Reanudar movimiento», sin `aria-pressed`, porque el texto ya describe la acción disponible. Los botones de video también cambian su texto y usan `data-accion` para el ícono.
+
+Los efectos arrancan después de la carga, en tiempo ocioso y cerca de la vista. Se detienen con la pestaña oculta y fuera de pantalla. Los lienzos decorativos llevan `aria-hidden="true"`. La preferencia de movimiento reducido deja el contenido completo y quieto.
+
+## Rendimiento y medios
+
+El estándar usa WebGL2 propio, IntersectionObserver y CSS. No incorpora Three.js, GSAP ni CDN en producción. Los módulos viven en `lib/estandar/`, los componentes en `components/estandar/` y la hoja en `styles/estandar.css` del kit.
+
+| Medida | Presupuesto |
+|---|---|
+| JavaScript de la nube, gzip | Hasta 12 KB |
+| JavaScript del campo, gzip | Hasta 5 KB |
+| Nube en computador | 26 000 puntos, DPR máximo 1,65 |
+| Nube en presupuesto móvil | 11 000 puntos, DPR máximo 1,35 |
+| Campo | DPR máximo 1,65 en computador y 1,35 en móvil |
+| Cuadros por segundo en móvil | Hasta 30 en nube y campo |
+| Lighthouse móvil | Rendimiento de al menos 85 y accesibilidad de al menos 95 |
+| LCP previsto | H1 |
+| CLS | Menor que 0,1 |
+| Imágenes | Menos de 400 KB, según R12 |
+| Activos de la nube | De 100 a 200 KB. El que sirve de respaldo del hero no pasa de 150 KB, el tope de héroes del contrato del sitio |
+| Videos | Hasta 8 MB, en R2 con poster WebP |
+
+La cantidad de puntos se fija al arrancar. El campo cambia sus anillos al cruzar la condición de pantalla. Los límites de Lighthouse son objetivos que se miden en el sitio final, no resultados garantizados por usar la plantilla.
+
+Los videos no se agregan al repositorio. Su origen en R2 se declara en `site.yaml`, dentro de `csp.media_src`. Cualquier origen externo de scripts, fuentes o imágenes también debe estar declarado para que la CSP lo permita. El Worker de la nube requiere el mismo origen en `worker-src` o, si esa directiva no existe, en `script-src`.
+
+## Imágenes, rótulos y textos MCCO
+
+Se usa primero material real propio de faena y después renders propios de nubes de puntos, modelos o mapas de desviaciones. El alcance de la IA lo fija la regla de imágenes del contrato del sitio (`AGENTS.md`). Cada imagen generada requiere un prompt revisado, geometría creíble y referencias, y se revisa por separado. No puede contener escalas, cifras, textos, logos ni marcas inventadas. Tampoco se usan avatares o personas generadas como testimonios.
+
+Una simulación presentada como trabajo de MCCO debe ser una captura real. Antes de publicarla se retiran escalas, valores, nombres de archivo y cualquier dato que identifique al cliente, la faena, la planta o el folio. También se retiran logos de software si permiten identificar al cliente. La revisión incluye el `forbidden` de `site.yaml` y la blacklist del kit.
+
+| `origen` | Rótulo visible |
+|---|---|
+| `real` | Foto de faena, o Video de faena en video |
+| `render` | Render 3D |
+| `ilustracion` | Ilustración |
+| `esquema` | Esquema |
+| `captura` | Captura de simulación |
+
+`Producto` y `Galeria` requieren el origen y escriben el chip translúcido de 11 px. La nube lleva su rótulo de ilustración. R11 comprueba que las ilustraciones estén rotuladas a la vista. El rótulo no convierte una imagen en evidencia: los datos deben venir de mediciones y fuentes verificables.
+
+Se escribe en español de Chile o neutro, sin voseo, emojis, flechas, rayas como conectores ni exclamaciones. Los títulos dicen qué se hace y las bajadas aportan lo necesario para elegir la siguiente acción. No se inventan cifras, clientes, certificaciones ni testimonios. Los clientes nombrables salen de `site.yaml`, campo `clients_allowed`, y toda métrica publicada necesita una fuente. Los textos nuevos pasan por `work-humanizer` y por el repaso de texto del proyecto.
+
+## Guía de iteración
+
+Antes de editar una página, se identifica el componente que corresponde y se revisa su contrato en `docs/ESTANDAR.md` del kit. La demo permite comprobar tonos, tamaños, galerías y movimiento con los mismos componentes que usa el sitio. No se copian sus implementaciones al repositorio para ajustarlas.
+
+Una web nueva configura `site.yaml`, su color de acción con contraste AA, un logo legible sobre negro y sus imágenes. En una web migrada se conservan las URLs, metadatos y funciones existentes, y se reemplazan las reglas v1 de la hoja del sitio antes de importarla desde `Estandar`.
+
+Cada cambio pasa por `npm run build` y `npm run check`. La revisión de pantalla incluye teclado, pausa, movimiento reducido, ausencia de WebGL, cambio de orientación y saltos de scroll. El manifiesto sigue siendo la fuente de verdad para contacto, CSP y contenido del sitio. El paquete y los workflows se fijan a la misma versión del kit, con lockfile generado según `docs/LOCKFILE.md`.
+
+## Alcance y pendientes
+
+El estándar no incorpora los configuradores, carrito, buscador de tienda ni barras de compra de la referencia de Apple. Tampoco define un modo oscuro automático: cada bloque declara su tono. Los formularios y sus estados se resuelven en su tarea de migración.
+
+La adopción en producción requiere el kit `v1.2.0` final y el visto bueno de Mario sobre la vista previa.
+
+## Fuente y licencia
+
+Adaptación de [Apple DESIGN.md, VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/apple/DESIGN.md), a partir de la copia de lectura obtenida el 16 de octubre de 2026. El [aviso MIT del repositorio de origen](https://github.com/VoltAgent/awesome-design-md/blob/main/LICENSE) se conserva a continuación.
+
+MIT License
+
+Copyright (c) 2026 VoltAgent
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

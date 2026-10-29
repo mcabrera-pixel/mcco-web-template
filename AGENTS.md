@@ -9,7 +9,7 @@ Web de marketing de una división de **MCCO Group SpA** (Chile). Sitio estático
 | `site.yaml` | Manifiesto del sitio: dominio, proyecto Cloudflare, contacto, analítica, CSP, prohibidos, servicios/FAQ de la home | Única fuente de verdad. Nada de esto se hardcodea en páginas. |
 | `src/pages/` | Páginas. `.astro` usan los layouts del kit. `.html` legado sale byte-idéntico (permitido durante migración, con canonical manual) | Ruta = URL. No renombrar rutas sin 301 en `_redirects`. |
 | `src/content/blog|casos|guias/*.md` | Contenido con frontmatter validado por Zod (`@mcco/web-kit/schemas`) | El motor de contenido y los agentes escriben **solo aquí**. Índice, sitemap y llms.txt se regeneran solos. |
-| `src/styles/theme.css` + `DESIGN.md` | Identidad visual del sitio (valores de tokens) | El kit fija nombres de tokens, nunca la estética. |
+| `src/styles/theme.css` + `DESIGN.md` | Valores del color de acción y de los activos del sitio. | El kit fija el estándar visual. |
 | `public/` | Estáticos tal cual (favicon, og.webp, logo, clave IndexNow) | `_headers` y `_redirects` los genera `mcco-headers` desde `site.yaml`: **no editar a mano** (reglas propias bajo el marcador `# --- reglas del sitio ---`). |
 | `functions/api/*.js` | Pages Functions (contacto, cotizador) | Secretos solo en Cloudflare (Settings → Environment variables). Nunca en el repo, nunca en `.dev.vars` commiteado. |
 | `.github/workflows/` | `ci.yml` (PR) y `deploy.yml` (main) llaman a los workflows reutilizables del kit | No duplicar lógica de CI aquí. |
